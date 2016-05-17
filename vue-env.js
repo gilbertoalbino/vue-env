@@ -1,3 +1,9 @@
+/*
+    https://github.com/websanova/vue-env
+    rob@websanova.com
+    Version 0.1.1
+ */
+
 function Env(params) {
     if ( ! params) {
         try {
