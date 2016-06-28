@@ -16,11 +16,22 @@ There is also an optional parameter to specify the file to use.
 Vue.use(require('vue-env'), require('./env.js'));
 ~~~
 
+A secondary parameter can be set right away also for environment specific config.
+
+~~~
+import _env from './env.js';
+Vue.use(require('vue-env'), _env, require('./config/' + _env.APP_ENV + '.js'));
+~~~
+
+
 After that just use the `get()` method to fetch environment constants.
 
 ~~~
 this.$env.get('SOME_ENV_VAR');
 this.$env.get('SOME_ENV_VAR', 'default value');
+
+this.$env.set('key', 'val');
+this.$env.set({key: 'val', key2: 'val2'});
 ~~~
 
 ## Sample
@@ -35,6 +46,7 @@ module.exports = {
     ...
 };
 ~~~
+
 
 ## Note
 

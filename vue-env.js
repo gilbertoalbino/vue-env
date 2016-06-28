@@ -1,28 +1,47 @@
-/*
-    https://github.com/websanova/vue-env
-    rob@websanova.com
-    Version 0.1.1
- */
+module.exports = (function () {
 
-function Env(params) {
-    if ( ! params) {
-        try {
-            params = require('../../env.js');
+    function _set(params, key, val) {
+        var i;
+
+        if ( ! key) { return; }
+
+        params = params || {};
+
+        if (typeof key === 'object') {
+            for (i in key) {
+                params[i] = key[i];
+            }
         }
-        catch(e) {
-            params = {};
+        else {
+            params[key] = val;
         }
+
+        return params;
     }
 
-    this.params = params;
-}
+    function Env(env, conf) {
+        if ( ! env) {
+            try {
+                env = require('../../env.js');
+            }
+            catch(e) {
+                env = {};
+            }
+        }
 
-Env.prototype.get = function (key, def) {
-    return this.params[key] || def;
-}
+        this.params = _set(env, conf);
+    }
 
-function install(Vue, params) {
-    Vue.prototype.$env = new Env(params);
-}
+    Env.prototype.get = function (key, def) {
+        return this.params[key] || def;
+    };
 
-module.exports = install;
+    Env.prototype.set = function (key, val) {
+        this.params = _set(this.params, key, val);
+    };
+
+    return function install(Vue, env, conf) {
+        Vue.prototype.$env = new Env(env, conf);
+    }
+
+})();
