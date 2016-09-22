@@ -29,7 +29,7 @@ module.exports = (function () {
             }
         }
 
-        this.params = _set(env, conf);
+        this.params = _set({}, env, conf);
     }
 
     Env.prototype.get = function (key, def) {
