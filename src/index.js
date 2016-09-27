@@ -1,24 +1,10 @@
 module.exports = (function () {
 
     function Env(options) {
-        var envFolderPath,
-            envFilePath = options.envFilePath || '../../../env.js',
-            env = options.env,
-            envData = {},
-            envLocalData = {};
+        var envLocal = options.local || require('../../../../src/env.js'),
+            envDefault = options.default || require('../../../../src/env/' + (options.env || envLocal.APP_ENV) + '.js');
 
-        envLocalData = require(`${envFilePath}`);
-
-        if ( ! env) {
-            env = envLocalData[options.envVar || 'APP_ENV'];
-        }
-
-        if (env) {
-            envFolderPath = (options.envFolderPath || '../../../src/env') + '/' + env + '.js';
-            envData = require(`${envFolderPath}`);
-        }
-
-        this.data = Object.assign(envData, envLocalData);
+        this.data = Object.assign(envDefault, envLocal);
     }
 
     Env.prototype.get = function (key, def) {

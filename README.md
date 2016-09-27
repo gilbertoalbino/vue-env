@@ -12,16 +12,39 @@ A Simple plugin for loading an environment file.
 
 ## Usage
 
-Not that all the options have defaults (values below) and should not have to be set if following the convention.
+For the simplest usage just include and the package will look for the local environment in `./src/env.js` and for default environment specific files in  `./src/env/` folder.
 
 ~~~
-Vue.use(require('../src/index.js'), {
-    env: process.env.NODE_ENV,
-    envVar: 'APP_ENV',
-    envFilePath: '../../env.js',
-    envFolderPath: '../../src/env'
+Vue.use(require('@websanova/vue-env'));
+~~~
+
+The file name should match the environment name.
+
+~~~
+./src/
+    ./env/
+        ./local.js
+        ./staging.js
+        ./production.js
+~~~
+
+Because of limitations on webpack, if a different path is required it will need to a `require`. This is because the way polyfill's in webpack work.
+
+~~~
+var _envLocal = require('../tests/env.js'),
+    _envDefault = require('../tests/env/' + _envLocal.APP_ENV + '.js');
+
+Vue.use(require('@websanova/vue-env'), {
+    local: _envLocal,
+    default: _envDefault
 });
 ~~~
+
+If convention in the plugin is being followed then an `env` option can also be set if the environment is coming from the system.
+
+Vue.use(require('@websanova/vue-env'), {
+    env: process.env.NODE_ENV,
+});
 
 After that just use the `get()` method to fetch environment constants.
 
@@ -32,27 +55,6 @@ this.$env.get('SOME_ENV_VAR', 'default value');
 this.$env.set('key', 'val');
 this.$env.set({key: 'val', key2: 'val2'});
 ~~~
-
-
-## Options
-
-### env
-
-Allows you to set the environment from the local node process. Useful when deploying to multiple machines.
-
-### envVar
-
-If `env` is not set it will auto load the `env.js` file and try to get the environment form there. The default is 'APP_ENV`.
-
-### envFilePath
-
-The default will check for the `env.js` file in the route, but you this allows you to specify an alternate route.
-
-Note that this is a strict local config file and should NOT be committed. For any environment variables to be shared among machines or developers set them in the appropriate file in the `envFolderPath`.
-
-### envFolderPath
-
-The folder to store your environment specific files. The file name matches the environment name. This is the base file and any value in `envFilePath` will override the values form the file here.
 
 
 ## Note
