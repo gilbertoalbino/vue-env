@@ -2,27 +2,26 @@
 
 A Simple plugin for loading an environment file.
 
+
+## Install
+
+~~~
+> sudo npm install @websanova/vue-store
+~~~
+
+
 ## Usage
 
-Just make sure there is an `env.js` file in the project root.
+Not that all the options have defaults (values below) and should not have to be set if following the convention.
 
 ~~~
-Vue.use(require('vue-env'));
+Vue.use(require('../src/index.js'), {
+    env: process.env.NODE_ENV,
+    envVar: 'APP_ENV',
+    envFilePath: '../../env.js',
+    envFolderPath: '../../src/env'
+});
 ~~~
-
-There is also an optional parameter to specify the file to use.
-
-~~~
-Vue.use(require('vue-env'), require('./env.js'));
-~~~
-
-A secondary parameter can be set right away also for environment specific config.
-
-~~~
-import _env from './env.js';
-Vue.use(require('vue-env'), _env, require('./config/' + _env.APP_ENV + '.js'));
-~~~
-
 
 After that just use the `get()` method to fetch environment constants.
 
@@ -34,18 +33,26 @@ this.$env.set('key', 'val');
 this.$env.set({key: 'val', key2: 'val2'});
 ~~~
 
-## Sample
 
-Here is a sample of what the `env.js` file should look like.
+## Options
 
-~~~
-module.exports = {
-    DEBUG: true,
-    APP_ENV: 'local',
+### env
 
-    ...
-};
-~~~
+Allows you to set the environment from the local node process. Useful when deploying to multiple machines.
+
+### envVar
+
+If `env` is not set it will auto load the `env.js` file and try to get the environment form there. The default is 'APP_ENV`.
+
+### envFilePath
+
+The default will check for the `env.js` file in the route, but you this allows you to specify an alternate route.
+
+Note that this is a strict local config file and should NOT be committed. For any environment variables to be shared among machines or developers set them in the appropriate file in the `envFolderPath`.
+
+### envFolderPath
+
+The folder to store your environment specific files. The file name matches the environment name. This is the base file and any value in `envFilePath` will override the values form the file here.
 
 
 ## Note
