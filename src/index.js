@@ -1,17 +1,22 @@
 module.exports = (function () {
 
     function Env(options) {
-        var env = options.env,
+        var envFolderPath,
             envFilePath = options.envFilePath || '../../../env.js',
-            envFolderPath = (options.envFolderPath + '/' || '../../../src/env/') + env + '.js',
+            env = options.env,
             envData = {},
             envLocalData = {};
 
-        envLocalData = require(envFilePath);
+        envLocalData = require(`${envFilePath}`);
 
-        if ( ! env) { env = envLocalData[options.envVar || 'APP_ENV']; }
+        if ( ! env) {
+            env = envLocalData[options.envVar || 'APP_ENV'];
+        }
 
-        if (env) { envData = require(envFolderPath); }
+        if (env) {
+            envFolderPath = (options.envFolderPath || '../../../src/env') + '/' + env + '.js';
+            envData = require(`${envFolderPath}`);
+        }
 
         this.data = Object.assign(envData, envLocalData);
     }
