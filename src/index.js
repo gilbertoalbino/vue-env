@@ -1,13 +1,27 @@
 module.exports = (function () {
 
     function Env(options) {
-        var envLocal = options.local || require('../../../../src/env.js'),
-            envDefault = options.default || require('../../../../src/env/' + (options.env || envLocal.APP_ENV) + '.js');
+        var APP_ENV = null,
+            _env = {},
+            envLocal = {},
+            envApp = {},
+            envDefault = options.default || {},
+            envFallback = {APP_ENV: 'production'};
 
-        this.data = Object.assign(envDefault, envLocal);
+        try { envLocal = require('../../../../.env'); } catch(e) { e; }
+        
+        APP_ENV = envLocal.APP_ENV || envDefault.APP_ENV || envFallback.APP_ENV;
+
+        try { envApp = require('../../../../src/env/' + APP_ENV + '.js'); } catch(e) { e; }
+
+        this.data = Object.assign(envDefault, envApp, envLocal);
     }
 
     Env.prototype.get = function (key, def) {
+        if ( ! key) {
+            return this.data;
+        }
+
         return this.data[key] || def;
     };
 
@@ -25,7 +39,11 @@ module.exports = (function () {
     };
 
     return function install(Vue, options) {
-        Vue.prototype.$env = new Env(options || {});
+        var _env = new Env(options || {});
+
+        Vue.env = _env;
+
+        Vue.prototype.$env = _env;
     }
 
 })();
