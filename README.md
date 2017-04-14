@@ -6,7 +6,7 @@ A Simple plugin for loading an environment file.
 ## Install
 
 ~~~
-> sudo npm install @websanova/vue-store
+> sudo npm install @websanova/vue-env
 ~~~
 
 
