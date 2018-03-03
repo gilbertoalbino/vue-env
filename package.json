@@ -1,25 +1,20 @@
 {
+  "name": "@websanova/vue-env",
+  "description": "Simple environment Vue.js plugin.",
+  "keywords": ["vue", "vue.js", "env", ".env", "environment", "plugin"],
   "author": {
     "name": "Websanova",
     "url": "http://websanova.com",
     "username": "websanova",
     "email": "rob@websanova.com"
   },
-  "dependencies": {},
-  "description": "Simple environment Vue.js plugin.",
-  "licenses": "MIT, GPL",
-  "devDependencies": {
-    "vue": "1.0.27"
-  },
-  "keywords": ["vue", "vue.js", "env", ".env", "environment", "plugin"],
-  "main": "src/index.js",
-  "name": "@websanova/vue-env",
   "repository": {
     "type": "git",
     "url": "https://github.com/websanova/vue-env"
   },
-  "version": "0.5.0",
-  "scripts": {
-    "test": "node ./tests/test.js"
-  }
+  "licenses": "MIT, GPL",
+  "main": "src/index.js",
+  "version": "0.6.0",
+  "dependencies": {},
+  "devDependencies": {}
 }

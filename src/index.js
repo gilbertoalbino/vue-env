@@ -1,3 +1,5 @@
+var _dot = require('@websanova/vue-dot');
+
 module.exports = (function () {
 
     function Env(options) {
@@ -14,36 +16,46 @@ module.exports = (function () {
 
         try { envApp = require('../../../../src/env/' + APP_ENV + '.js'); } catch(e) { e; }
 
-        this.data = Object.assign(envDefault, envApp, envLocal);
+        this.watch = new options.Vue({
+            data: function () {
+                return {
+                    data: {}
+                };
+            }
+        });
+
+        _dot.merge(this.watch.data, envDefault);
+        _dot.merge(this.watch.data, envApp);
+        _dot.merge(this.watch.data, envLocal);
     }
 
     Env.prototype.get = function (key, def) {
-        if ( ! key) {
-            return this.data;
-        }
-
-        return this.data[key] || def;
+        return _dot.get(key, this.watch.data) || def;
     };
 
     Env.prototype.set = function (key, val) {
-        var i;
-
-        if (typeof key === 'object') {
-            for (i in key) {
-                this.data[i] = key[i];
-            }
-        }
-        else {
-            this.data[key] = val;
-        }
+        _dot.set(key, val, this.watch.data);
     };
 
     return function install(Vue, options) {
-        var _env = new Env(options || {});
+        var env;
 
-        Vue.env = _env;
+        options = options || {};
 
-        Vue.prototype.$env = _env;
+        options.Vue = Vue;
+
+        env = new Env(options);
+
+        Vue.env = env;
+
+        Vue.prototype.$env = env;
+
+        Object.defineProperties(Vue.prototype, {
+            $env: {
+                get: function() {
+                    return env;
+                }
+            }
+        });
     }
-
 })();

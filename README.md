@@ -6,7 +6,7 @@ A Simple plugin for loading an environment file.
 ## Install
 
 ~~~
-> sudo npm install @websanova/vue-store
+> sudo npm install @websanova/vue-env
 ~~~
 
 
@@ -18,20 +18,10 @@ For the simplest usage just include and the package will look for the local envi
 Vue.use(require('@websanova/vue-env'));
 ~~~
 
-The file name should match the environment name.
-
-~~~
-./src/
-    ./env/
-        ./local.js
-        ./staging.js
-        ./production.js
-~~~
-
 The env plugin will be available immediately after install.
 
 ~~~
-Vue.env.get();
+Vue.env.get('SOME_VAR');
 ~~~
 
 OR through the Vue instance.
@@ -42,6 +32,41 @@ this.$env.get('SOME_ENV_VAR', 'default value');
 
 this.$env.set('key', 'val');
 this.$env.set({key: 'val', key2: 'val2'});
+~~~
+
+
+## Setting the Environment
+
+The environment values can be initialized three ways and will override each other.
+
+When setting the environment it must always be a valid JSON object.
+
+### 1. Default on Install
+
+~~~
+Vue.use(require('@websanova/vue-env'), {APP_URL: 'https://example.com'});
+~~~
+
+### 2. App Presets
+
+~~~
+./src/
+    ./env/
+        ./local.js
+        ./staging.js
+        ./production.js
+~~~
+
+### 3. Local .env File
+
+Must be located at root of project.
+
+Note that this file is named `.env` but should return a valid JSON object.
+
+~~~
+module.exports = {
+    APP_URL: 'https://example.com'
+};
 ~~~
 
 
