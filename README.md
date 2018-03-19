@@ -61,7 +61,7 @@ Vue.use(require('@websanova/vue-env'), {APP_URL: 'https://example.com'});
 
 Must be located at root of project.
 
-Note that this file is named `.env` but should return a valid JSON object.
+Note that this file is named `.env` but should return a valid Javascript object.
 
 ~~~
 module.exports = {
