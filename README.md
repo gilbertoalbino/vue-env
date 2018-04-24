@@ -6,7 +6,13 @@ A Simple plugin for loading an environment file.
 ## Install
 
 ~~~
-> sudo npm install @websanova/vue-env
+> npm install @websanova/vue-env
+~~~
+
+or
+
+~~~
+> yarn add @websanova/vue-env
 ~~~
 
 
